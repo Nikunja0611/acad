@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Student Dashboard</h2>
+
+<h3>Marks</h3>
+<canvas id="marksChart" width="400" height="200"></canvas>
+
+<h3>Attendance</h3>
+<canvas id="attendanceChart" width="400" height="200"></canvas>
+
+<script>
+    // Marks Chart
+    var ctx = document.getElementById('marksChart').getContext('2d');
+    var marksChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: {{ subjects|tojson }},
+            datasets: [{
+                label: 'Scores',
+                data: {{ scores|tojson }},
+                backgroundColor: 'rgba(54, 162, 235, 0.6)'
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Marks Overview'
+            }
+        }
+    });
+
+    // Attendance Chart
+    var ctx2 = document.getElementById('attendanceChart').getContext('2d');
+    var attendanceChart = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: {{ attendance_dates|tojson }},
+            datasets: [{
+                label: 'Attendance',
+                data: {{ attendance_status|tojson }},
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                fill: false,
+                borderColor: 'rgba(75, 192, 192, 1)'
+            }]
+        },
+        options: {
+            title: {
+                display: true,
+                text: 'Attendance Record'
+            },
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        callback: function(value) {
+                            return value === 'Present' ? 1 : 0;
+                        },
+                        stepSize: 1,
+                        min: 0,
+                        max: 1
+                    },
+                    scaleLabel: {
+                        display: true,
+                        labelString: 'Status'
+                    }
+                }]
+            }
+        }
+    });
+</script>
+{% endblock %}

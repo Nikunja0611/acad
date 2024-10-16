@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Defaulter List</h2>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Username</th>
+            <th>Average Score</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for student in defaulters %}
+        <tr>
+            <td>{{ student.username }}</td>
+            <td>{{ "%.2f"|format(student.avg_score) }}%</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
